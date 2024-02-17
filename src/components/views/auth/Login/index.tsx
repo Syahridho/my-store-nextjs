@@ -2,6 +2,7 @@ import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
+import { redirect } from "next/dist/server/api-utils";
 
 const LoginView = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -73,6 +74,14 @@ const LoginView = () => {
             {isLoading ? "Loading..." : "Login"}
           </button>
         </form>
+        <hr className="my-4" />
+        <button
+          type="button"
+          className="w-full my-2 py-1.5 rounded border border-blue-950 bg-white text-blue-950  flex items-center justify-center transition duration-500 hover:bg-slate-100"
+          onClick={() => signIn("google", { callbackUrl, redirect: false })}
+        >
+          <i className="bx bxl-google font-semibold mx-2"></i> Login With Google
+        </button>
       </div>
       <p className="my-4">
         Don&apos;t have an account? Sign Up{" "}
