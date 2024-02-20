@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/router";
+import Input from "@/components/ui/Input";
+import Button from "@/components/ui/Button";
 
 const RegisterView = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -41,57 +43,17 @@ const RegisterView = () => {
       <h1 className="font-bold text-2xl pb-4">Register</h1>
       <div className="min-w-96 border rounded px-8 py-8">
         <form onSubmit={handleSubmit}>
-          <div className="flex flex-col mb-2">
-            <label htmlFor="fullname" className="font-medium">
-              FullName
-            </label>
-            <input
-              name="fullname"
-              id="fullname"
-              type="text"
-              className="border rounded mt-1 px-2 py-1.5 bg-slate-50 "
-            />
-          </div>
-          <div className="flex flex-col mb-2">
-            <label htmlFor="email" className="font-medium">
-              Email
-            </label>
-            <input
-              name="email"
-              id="email"
-              type="email"
-              className="border rounded mt-1 px-2 py-1.5 bg-slate-50"
-            />
-          </div>
-          <div className="flex flex-col mb-2">
-            <label htmlFor="phone" className="font-medium">
-              Phone
-            </label>
-            <input
-              name="phone"
-              id="phone"
-              type="text"
-              className="border rounded mt-1 px-2 py-1.5 bg-slate-50"
-            />
-          </div>
-          <div className="flex flex-col mb-2">
-            <label htmlFor="password" className="font-medium">
-              Password
-            </label>
-            <input
-              name="password"
-              id="password"
-              type="password"
-              className="border rounded mt-1 px-2 py-1.5 bg-slate-50"
-            />
-          </div>
+          <Input label="Email" name="email" type="email" />
+          <Input label="Fullname" name="fullname" type="text" />
+          <Input label="Phone" name="phone" type="number" />
+          <Input label="Password" name="password" type="password" />
           {error && <p className="text-red-500">{error}</p>}
-          <button
+          <Button
             type="submit"
-            className="w-full my-2 py-1.5 rounded bg-blue-950 text-white text-center transition duration-500 hover:bg-blue-900"
+            variant="bg-blue-950 text-white hover:bg-blue-900"
           >
             {isLoading ? "Loading..." : "Register"}
-          </button>
+          </Button>
         </form>
       </div>
       <p className="my-4">
