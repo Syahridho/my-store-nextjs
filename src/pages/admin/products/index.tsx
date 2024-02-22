@@ -1,8 +1,10 @@
+import ProductsAdminView from "@/components/views/admin/Products";
+
 const AdminProductPage = () => {
   return (
-    <div>
-      <h1>Admin Page</h1>
-    </div>
+    <>
+      <ProductsAdminView />
+    </>
   );
 };
 

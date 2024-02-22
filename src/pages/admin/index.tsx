@@ -1,8 +1,10 @@
+import Dashboard from "@/components/views/admin/Dashboard";
+
 const AdminPage = () => {
   return (
-    <div>
-      <h1>Admin Page</h1>
-    </div>
+    <>
+      <Dashboard />
+    </>
   );
 };
 
