@@ -17,7 +17,7 @@ const Button = (props: PropsTypes) => {
   return (
     <button
       type={type}
-      className={`w-full my-2 py-1.5 rounded border border-blue-950 flex items-center justify-center transition duration-500 ${variant} ${className}`}
+      className={`w-full my-2 py-1.5 rounded border border-blue-950 flex items-center justify-center transition duration-500 disabled:opacity-70 ${variant} ${className}`}
       onClick={onClick}
     >
       {children}
