@@ -51,6 +51,7 @@ const LoginView = () => {
         {error && <p className="text-red-500">{error}</p>}
         <Button
           type="submit"
+          className="w-full"
           variant="bg-blue-950 text-white hover:bg-blue-900"
         >
           {isLoading ? "Loading..." : "Login"}
@@ -59,6 +60,7 @@ const LoginView = () => {
       <hr className="my-4" />
       <Button
         type="button"
+        className="w-full"
         onClick={() => signIn("google", { callbackUrl, redirect: false })}
       >
         <i className="bx bxl-google font-semibold mx-2"></i> Login With Google

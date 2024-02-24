@@ -1,15 +1,24 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AdminLayout from "@/components/layouts/AdminLayout";
 import Button from "@/components/ui/Button";
 import ModalUpdateUser from "./ModalUpdateUser";
+import userServices from "@/services/user";
+import ModalDeleteUser from "./ModalDeleteUser";
 
 type PropTypes = {
   users: any;
 };
 
 const UsersAdminView = (props: PropTypes) => {
-  const [updateUser, setUpdateUser] = useState<any>({});
   const { users } = props;
+  const [updateUser, setUpdateUser] = useState<any>({});
+  const [usersData, setUsersData] = useState<any>([]);
+  const [deleteUser, setDeleteUser] = useState<any>({});
+
+  useEffect(() => {
+    setUsersData(users);
+  }, [users]);
+
   return (
     <>
       <AdminLayout>
@@ -37,7 +46,7 @@ const UsersAdminView = (props: PropTypes) => {
               </tr>
             </thead>
             <tbody>
-              {users.map((user: any, index: number) => (
+              {usersData.map((user: any, index: number) => (
                 <tr key={user.id}>
                   <td className="border border-slate-200 py-1 px-2 text-sm">
                     {index + 1}
@@ -62,13 +71,16 @@ const UsersAdminView = (props: PropTypes) => {
                         className="px-2"
                         onClick={() => setUpdateUser(user)}
                       >
+                        <i className="bx bxs-edit-alt me-1.5" />
                         Update
                       </Button>
                       <Button
                         type="button"
                         variant="bg-red-600 text-white hover:bg-red-700 border-red-600"
                         className="px-2"
+                        onClick={() => setDeleteUser(user)}
                       >
+                        <i className="bx bxs-trash me-1.5" />
                         Delete
                       </Button>
                     </div>
@@ -83,6 +95,14 @@ const UsersAdminView = (props: PropTypes) => {
         <ModalUpdateUser
           updateUser={updateUser}
           setUpdateUser={setUpdateUser}
+          setUsersData={setUsersData}
+        />
+      )}
+      {Object.keys(deleteUser).length && (
+        <ModalDeleteUser
+          deleteUser={deleteUser}
+          setDeleteUser={setDeleteUser}
+          setUsersData={setUsersData}
         />
       )}
     </>

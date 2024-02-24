@@ -47,6 +47,7 @@ const RegisterView = () => {
         {error && <p className="text-red-500">{error}</p>}
         <Button
           type="submit"
+          className="w-full"
           variant="bg-blue-950 text-white hover:bg-blue-900"
         >
           {isLoading ? "Loading..." : "Register"}
