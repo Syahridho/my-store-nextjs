@@ -11,7 +11,7 @@ const Button = (props: PropsTypes) => {
     type,
     onClick,
     children,
-    variant = "bg-white text-blue-950 hover:bg-slate-100",
+    variant = "bg-slate-800 text-white hover:bg-slate-950",
     className,
   } = props;
   return (
