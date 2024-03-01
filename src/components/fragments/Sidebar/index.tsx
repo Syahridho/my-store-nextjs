@@ -15,7 +15,7 @@ const Sidebar = (props: Propstypes) => {
   const { lists } = props;
   const { pathname } = useRouter();
   return (
-    <div className="bg-slate-800 text-white p-5 w-60 h-screen flex flex-col justify-between ">
+    <div className="bg-slate-800 text-white p-5 w-60 h-screen flex flex-col justify-between sticky left-0 top-0">
       <div className="">
         <h1 className="mb-7 font-bold text-center text-lg">Admin Panel</h1>
         <div className="flex flex-col gap-3">

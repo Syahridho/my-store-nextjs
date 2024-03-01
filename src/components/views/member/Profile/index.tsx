@@ -8,10 +8,38 @@ import { useState } from "react";
 
 const ProfileMemberView = ({ profile, setProfile, session }: any) => {
   const [changeImage, setChangeImage] = useState<any>({});
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState("");
+  const [error, setError] = useState("");
+
+  const handleChangeProfile = async (e: any) => {
+    e.preventDefault();
+    setIsLoading("profile");
+    const form = e.target as HTMLFormElement;
+    const data = {
+      fullname: form.fullname.value,
+      phone: form.phone.value,
+    };
+    const result = await userServices.updateProfile(
+      profile.id,
+      data,
+      session.data?.accessToken
+    );
+    if (result.status === 200) {
+      setIsLoading("");
+      setProfile({
+        ...profile,
+        fullname: data.fullname,
+        phone: data.phone,
+      });
+      form.reset();
+    } else {
+      setIsLoading("");
+    }
+  };
+
   const handleChangeProfilePicture = (e: any) => {
     e.preventDefault();
-    setIsLoading(true);
+    setIsLoading("picture");
     const file = e.target[0]?.files[0];
     if (file) {
       uploadFile(
@@ -28,7 +56,7 @@ const ProfileMemberView = ({ profile, setProfile, session }: any) => {
               session.data?.accessToken
             );
             if (result.status === 200) {
-              setIsLoading(false);
+              setIsLoading("");
               setProfile({
                 ...profile,
                 image: newImageURL,
@@ -36,21 +64,45 @@ const ProfileMemberView = ({ profile, setProfile, session }: any) => {
               setChangeImage({});
               e.target[0].value = "";
             } else {
-              setIsLoading(false);
+              setIsLoading("");
             }
           } else {
-            setIsLoading(false);
+            setIsLoading("");
             setChangeImage({});
           }
         }
       );
     }
   };
+
+  const handleChangePassword = async (e: any) => {
+    e.preventDefault();
+    setIsLoading("password");
+    const form = e.target as HTMLFormElement;
+    const data = {
+      password: form["new-password"].value,
+      oldPassword: form["old-password"].value,
+      encryptedPassword: profile.password,
+    };
+    const result = await userServices.updateProfile(
+      profile.id,
+      data,
+      session.data?.accessToken
+    );
+    if (result.status === 200) {
+      setIsLoading("");
+      form.reset();
+      e.target[0].value = "";
+    } else {
+      setIsLoading("");
+    }
+  };
+
   return (
     <MemberLayout>
       <h1 className="text-2xl">Profile Page</h1>
       <div className="flex gap-10 mt-10">
-        <div className="w-1/5 p-2 shadow flex flex-col items-center  justify-center">
+        <div className="w-1/5 p-2 h-80 shadow flex flex-col items-center justify-center">
           {profile.image ? (
             <Image
               src={profile.image}
@@ -83,12 +135,13 @@ const ProfileMemberView = ({ profile, setProfile, session }: any) => {
               }}
             />
             <Button className="text-center" type="submit">
-              {isLoading ? "Uploading..." : "Upload"}
+              {isLoading === "picture" ? "Uploading..." : "Upload"}
             </Button>
           </form>
         </div>
         <div className="w-4/5 shadow px-10 py-5 rounded">
-          <form action="">
+          <h2 className="text-2xl font-semibold mb-4">Profile</h2>
+          <form onSubmit={handleChangeProfile}>
             <Input
               type="text"
               label="FullName"
@@ -100,12 +153,20 @@ const ProfileMemberView = ({ profile, setProfile, session }: any) => {
               label="Email"
               name="email"
               defaultValue={profile.email}
+              disabled
             />
             <Input
               type="number"
               label="Phone"
               name="phone"
               defaultValue={profile.phone}
+            />
+            <Input
+              type="text"
+              label="Role"
+              name="role"
+              defaultValue={profile.role}
+              disabled
             />
             {/* <Input
             type="password"
@@ -114,9 +175,19 @@ const ProfileMemberView = ({ profile, setProfile, session }: any) => {
             defaultValue={profile.password}
           /> */}
             <Button type="submit" className="mt-4">
-              Update Profile
+              {isLoading === "profile" ? "Loading..." : "Update profile"}
             </Button>
           </form>
+          <div className="mt-10">
+            <h2 className="text-2xl font-semibold">Change Password</h2>
+            <form onSubmit={handleChangePassword}>
+              <Input type="password" label="Old Password" name="old-password" />
+              <Input type="password" label="New Password" name="new-password" />
+              <Button type="submit" className="mt-4">
+                {isLoading === "password" ? "Loading..." : "Update password"}
+              </Button>
+            </form>
+          </div>
         </div>
       </div>
     </MemberLayout>
