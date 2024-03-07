@@ -6,7 +6,12 @@ import userServices from "@/services/user";
 import Image from "next/image";
 import { useState } from "react";
 
-const ProfileMemberView = ({ profile, setProfile, session }: any) => {
+const ProfileMemberView = ({
+  profile,
+  setProfile,
+  session,
+  setToaster,
+}: any) => {
   const [changeImage, setChangeImage] = useState<any>({});
   const [isLoading, setIsLoading] = useState("");
   const [error, setError] = useState("");
@@ -32,6 +37,10 @@ const ProfileMemberView = ({ profile, setProfile, session }: any) => {
         phone: data.phone,
       });
       form.reset();
+      setToaster({
+        variant: "success",
+        message: "Success Update Profile",
+      });
     } else {
       setIsLoading("");
     }
@@ -63,12 +72,20 @@ const ProfileMemberView = ({ profile, setProfile, session }: any) => {
               });
               setChangeImage({});
               e.target[0].value = "";
+              setToaster({
+                variant: "success",
+                message: "Success Change Picture",
+              });
             } else {
               setIsLoading("");
             }
           } else {
             setIsLoading("");
             setChangeImage({});
+            setToaster({
+              variant: "danger",
+              message: "Failed Change Picture",
+            });
           }
         }
       );
@@ -92,9 +109,16 @@ const ProfileMemberView = ({ profile, setProfile, session }: any) => {
     if (result.status === 200) {
       setIsLoading("");
       form.reset();
-      e.target[0].value = "";
+      setToaster({
+        variant: "success",
+        message: "Success Change Password",
+      });
     } else {
       setIsLoading("");
+      setToaster({
+        variant: "danger",
+        message: "Failed Change Password",
+      });
     }
   };
 

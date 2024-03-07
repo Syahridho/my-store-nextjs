@@ -7,7 +7,7 @@ import userServices from "@/services/user";
 import { useSession } from "next-auth/react";
 
 const ModalUpdateUser = (props: any) => {
-  const { updateUser, setUpdateUser, setUsersData } = props;
+  const { updateUser, setUpdateUser, setUsersData, setToaster } = props;
   const session: any = useSession();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -29,8 +29,16 @@ const ModalUpdateUser = (props: any) => {
       setUpdateUser({});
       const { data } = await userServices.getAllUser();
       setUsersData(data.data);
+      setToaster({
+        variant: "success",
+        message: "Success Update",
+      });
     } else {
       setIsLoading(false);
+      setToaster({
+        variant: "danger",
+        message: "Failed Update",
+      });
     }
   };
   return (
