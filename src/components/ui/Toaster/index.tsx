@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
 type PropTypes = {
   variant: string;
   message: string;
-  setToaster: any;
+  setToaster: Dispatch<SetStateAction<{}>>;
 };
 
 const toasterVariant: any = {

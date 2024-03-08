@@ -1,20 +1,23 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import AdminLayout from "@/components/layouts/AdminLayout";
 import Button from "@/components/ui/Button";
 import ModalUpdateUser from "./ModalUpdateUser";
-import userServices from "@/services/user";
 import ModalDeleteUser from "./ModalDeleteUser";
+import { User } from "@/types/user.type";
+import { useSession } from "next-auth/react";
 
 type PropTypes = {
-  users: any;
-  setToaster: any;
+  users: User[];
+  setToaster: Dispatch<SetStateAction<{}>>;
 };
 
 const UsersAdminView = (props: PropTypes) => {
   const { users, setToaster } = props;
-  const [updateUser, setUpdateUser] = useState<any>({});
-  const [usersData, setUsersData] = useState<any>([]);
-  const [deleteUser, setDeleteUser] = useState<any>({});
+  const session: any = useSession();
+
+  const [updateUser, setUpdateUser] = useState<User | {}>({});
+  const [deleteUser, setDeleteUser] = useState<User | {}>({});
+  const [usersData, setUsersData] = useState<User[]>([]);
 
   useEffect(() => {
     setUsersData(users);
@@ -47,7 +50,7 @@ const UsersAdminView = (props: PropTypes) => {
               </tr>
             </thead>
             <tbody>
-              {usersData.map((user: any, index: number) => (
+              {usersData.map((user: User, index: number) => (
                 <tr key={user.id}>
                   <td className="border border-slate-200 py-1 px-2 text-sm">
                     {index + 1}
@@ -98,6 +101,7 @@ const UsersAdminView = (props: PropTypes) => {
           setUpdateUser={setUpdateUser}
           setUsersData={setUsersData}
           setToaster={setToaster}
+          session={session}
         />
       )}
       {Object.keys(deleteUser).length && (
@@ -106,6 +110,7 @@ const UsersAdminView = (props: PropTypes) => {
           setDeleteUser={setDeleteUser}
           setUsersData={setUsersData}
           setToaster={setToaster}
+          session={session}
         />
       )}
     </>

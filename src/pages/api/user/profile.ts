@@ -70,7 +70,7 @@ export default async function handler(
             data.password = await hash(data.password, 10);
           }
 
-          await updateData("users", user[0], data, (result: boolean) => {
+          await updateData("users", decoded.id, data, (result: boolean) => {
             if (result) {
               res.status(200).json({
                 status: true,

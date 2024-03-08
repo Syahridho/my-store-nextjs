@@ -2,13 +2,21 @@ import Modal from "@/components/ui/Modal";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Button from "@/components/ui/Button";
-import { FormEvent, useState } from "react";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 import userServices from "@/services/user";
-import { useSession } from "next-auth/react";
+import { User } from "@/types/user.type";
 
-const ModalUpdateUser = (props: any) => {
-  const { updateUser, setUpdateUser, setUsersData, setToaster } = props;
-  const session: any = useSession();
+type PropTypes = {
+  setUsersData: Dispatch<SetStateAction<User[]>>;
+  setToaster: Dispatch<SetStateAction<{}>>;
+  updateUser: User | any;
+  setUpdateUser: Dispatch<SetStateAction<{}>>;
+  session: any;
+};
+
+const ModalUpdateUser = (props: PropTypes) => {
+  const { updateUser, setUpdateUser, setUsersData, setToaster, session } =
+    props;
   const [isLoading, setIsLoading] = useState(false);
 
   const handleUpdateUser = async (event: FormEvent<HTMLFormElement>) => {
@@ -80,7 +88,7 @@ const ModalUpdateUser = (props: any) => {
           variant="bg-slate-800 text-white hover:bg-slate-900"
           className="mt-8 px-8 float-end"
         >
-          Update
+          {isLoading ? "Updating..." : "Update"}
         </Button>
       </form>
     </Modal>
