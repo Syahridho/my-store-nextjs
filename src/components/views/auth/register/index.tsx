@@ -13,6 +13,7 @@ const RegisterView = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const { push } = useRouter();
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setIsLoading(true);
