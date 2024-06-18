@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { convertIDR } from "@/utils/currency";
 import { Product } from "@/types/product.type";
+import ModalAddProduct from "./ModalAddProduct";
 
 type PropTypes = {
   products: Product[];
@@ -16,17 +17,23 @@ const ProductsAdminView = (props: PropTypes) => {
   const session: any = useSession();
 
   const [productsData, setProductsData] = useState<Product[]>([]);
-
+  const [modalAddProduct, setModalAddProdct] = useState(false);
   useEffect(() => {
     setProductsData(products);
   }, [products]);
 
-  console.log(productsData);
   return (
     <>
       <AdminLayout>
         <div className="p-12">
           <h1 className="text-xl font-semibold">Products Management</h1>
+          <Button
+            type="button"
+            className=""
+            onClick={() => setModalAddProdct(true)}
+          >
+            <i className="bx bx-plus" /> Add Product
+          </Button>
           <table className="border-collapse border border-slate-500 w-full mt-4">
             <thead className="bg-gray-300">
               <tr>
@@ -165,6 +172,13 @@ const ProductsAdminView = (props: PropTypes) => {
           </table>
         </div>
       </AdminLayout>
+      {modalAddProduct && (
+        <ModalAddProduct
+          setModalAddProduct={setModalAddProdct}
+          setToaster={setToaster}
+          setProductsData={setProductsData}
+        />
+      )}
     </>
   );
 };

@@ -22,7 +22,7 @@ const Modal = ({
   return (
     <div className="fixed w-screen h-screen z-50 bg-black bg-opacity-60 flex justify-center items-center top-0">
       <div
-        className="bg-white p-8 rounded w-[50vw] max-h-[80vh] border"
+        className="bg-white p-8 rounded w-[50vw] max-h-[80vh] border overflow-auto"
         ref={ref}
       >
         {children}

@@ -6,11 +6,20 @@ type PropsTypes = {
   defaultValue?: string;
   disabled?: boolean;
   className?: string;
+  onChange?: (e: any) => void;
 };
 
 const Input = (props: PropsTypes) => {
-  const { label, name, type, placeholder, defaultValue, disabled, className } =
-    props;
+  const {
+    label,
+    name,
+    type,
+    placeholder,
+    defaultValue,
+    disabled,
+    className,
+    onChange,
+  } = props;
   return (
     <div className="flex flex-col mb-2">
       {label && (
@@ -26,6 +35,7 @@ const Input = (props: PropsTypes) => {
         placeholder={placeholder}
         defaultValue={defaultValue}
         disabled={disabled}
+        onChange={onChange}
       />
     </div>
   );
