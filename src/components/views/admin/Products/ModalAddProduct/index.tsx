@@ -3,8 +3,10 @@ import Input from "@/components/ui/Input";
 import InputFile from "@/components/ui/InputFile";
 import Modal from "@/components/ui/Modal";
 import Select from "@/components/ui/Select";
+import productServices from "@/services/product";
 import { Product } from "@/types/product.type";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useSession } from "next-auth/react";
+import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 
 type Proptypes = {
   setModalAddProduct: Dispatch<SetStateAction<boolean>>;
@@ -18,23 +20,49 @@ const ModalAddProduct = (props: Proptypes) => {
   const [isLoading, setIsLoading] = useState(false);
   const [stockCount, setStockCount] = useState([{ size: "", qty: 0 }]);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
+  const session: any = useSession();
 
   const handleStock = (e: any, i: number, type: string) => {
     const newStockCount: any = [...stockCount];
     newStockCount[i][type] = e.target.value;
     setStockCount(newStockCount);
   };
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault;
+    setIsLoading(true);
+    const form: any = event.target as HTMLFormElement;
+    const data = {
+      name: form.name.value,
+      price: form.price.value,
+      category: form.category.value,
+      status: form.status.value,
+      stock: stockCount,
+      image: "",
+    };
+
+    const result = await productServices.addProduct(
+      data,
+      session.data?.accessToken
+    );
+  };
+
   return (
     <Modal onClose={() => {}}>
       <h1 className="text-center font-bold text-xl mb-2">Add Product</h1>
-      <form onSubmit={() => {}}>
+      <form onSubmit={handleSubmit}>
         <Input
           label="Name"
           name="name"
           type="text"
           placeholder="Insert Product Name"
         />
-        <Input label="Price" name="price" type="number" />
+        <Input
+          label="Price"
+          name="price"
+          type="number"
+          placeholder="Insert Product Price"
+        />
         <Select
           label="Category"
           name="category"
