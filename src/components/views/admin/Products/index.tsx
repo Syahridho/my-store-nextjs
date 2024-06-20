@@ -21,7 +21,6 @@ const ProductsAdminView = (props: PropTypes) => {
   useEffect(() => {
     setProductsData(products);
   }, [products]);
-
   return (
     <>
       <AdminLayout>
@@ -120,7 +119,7 @@ const ProductsAdminView = (props: PropTypes) => {
                       rowSpan={product.stock.length}
                       className="border border-slate-200 py-1 px-2 text-sm text-center"
                     >
-                      {product.categore}
+                      {product.category}
                     </td>
                     <td
                       rowSpan={product.stock.length}

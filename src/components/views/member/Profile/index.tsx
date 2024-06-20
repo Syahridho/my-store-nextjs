@@ -57,10 +57,13 @@ const ProfileMemberView = ({
     setIsLoading("picture");
     const form = e.target as HTMLFormElement;
     const file = form.image.files[0];
+    const newName = "profile." + file.name.split(".")[1];
     if (file) {
       uploadFile(
         profile.id,
         file,
+        newName,
+        "users",
         async (status: boolean, newImageURL: string) => {
           if (status) {
             const data = {

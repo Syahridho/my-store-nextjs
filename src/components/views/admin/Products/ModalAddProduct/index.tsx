@@ -3,6 +3,7 @@ import Input from "@/components/ui/Input";
 import InputFile from "@/components/ui/InputFile";
 import Modal from "@/components/ui/Modal";
 import Select from "@/components/ui/Select";
+import { uploadFile } from "@/lib/firebase/service";
 import productServices from "@/services/product";
 import { Product } from "@/types/product.type";
 import { useSession } from "next-auth/react";
@@ -28,8 +29,65 @@ const ModalAddProduct = (props: Proptypes) => {
     setStockCount(newStockCount);
   };
 
+  const uploadImage = async (id: string, form: any) => {
+    const file = form.image.files[0];
+    const newName = "main." + file.name.split(".")[1];
+    if (file) {
+      await uploadFile(
+        id,
+        file,
+        newName,
+        "products",
+        async (status: boolean, newImageURL: string) => {
+          if (status) {
+            const data = {
+              image: newImageURL,
+            };
+
+            const result = await productServices.updateProduct(
+              id,
+              data,
+              session.data?.accessToken
+            );
+
+            if (result.status === 200) {
+              setIsLoading(false);
+              setUploadedImage(null);
+              form.reset();
+              setModalAddProduct(false);
+              const { data } = await productServices.getAllProducts();
+              setProductsData(data.data);
+              setToaster({
+                variant: "success",
+                message: "Success Add Product",
+              });
+            } else {
+              setIsLoading(false);
+              setToaster({
+                variant: "danger",
+                message: "Failed Add Product",
+              });
+            }
+          } else {
+            setIsLoading(false);
+            setToaster({
+              variant: "danger",
+              message: "Failed Add Product",
+            });
+          }
+        }
+      );
+    } else {
+      setIsLoading(false);
+      setToaster({
+        variant: "danger",
+        message: "No file selected",
+      });
+    }
+  };
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault;
+    event.preventDefault(); // Corrected this line
     setIsLoading(true);
     const form: any = event.target as HTMLFormElement;
     const data = {
@@ -45,6 +103,16 @@ const ModalAddProduct = (props: Proptypes) => {
       data,
       session.data?.accessToken
     );
+
+    if (result.status === 200) {
+      uploadImage(result.data.data.id, form);
+    } else {
+      setIsLoading(false);
+      setToaster({
+        variant: "danger",
+        message: "Failed to add product",
+      });
+    }
   };
 
   return (
@@ -87,7 +155,7 @@ const ModalAddProduct = (props: Proptypes) => {
             <div className="w-[50%]">
               <Input
                 label="Size"
-                name="size"
+                name={`size_${i}`}
                 type="text"
                 placeholder="Insert Product Size"
                 onChange={(e) => {
@@ -98,7 +166,7 @@ const ModalAddProduct = (props: Proptypes) => {
             <div className="w-[50%]">
               <Input
                 label="Qty"
-                name="qty"
+                name={`qty_${i}`}
                 type="number"
                 placeholder="Insert Product Qty"
                 onChange={(e) => {
@@ -116,7 +184,7 @@ const ModalAddProduct = (props: Proptypes) => {
           Add New Stock
         </Button>
         <InputFile
-          name="Image Product"
+          name="image"
           uploadedImage={uploadedImage}
           setUploadedImage={setUploadedImage}
         />
