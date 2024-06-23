@@ -6,6 +6,7 @@ import Image from "next/image";
 import { convertIDR } from "@/utils/currency";
 import { Product } from "@/types/product.type";
 import ModalAddProduct from "./ModalAddProduct";
+import ModalUpdateProduct from "./ModalUpdateProduct";
 
 type PropTypes = {
   products: Product[];
@@ -17,7 +18,8 @@ const ProductsAdminView = (props: PropTypes) => {
   const session: any = useSession();
 
   const [productsData, setProductsData] = useState<Product[]>([]);
-  const [modalAddProduct, setModalAddProdct] = useState(false);
+  const [modalAddProduct, setModalAddProduct] = useState(false);
+  const [updateProduct, setUpdateProduct] = useState<Product | {}>({});
   useEffect(() => {
     setProductsData(products);
   }, [products]);
@@ -29,7 +31,7 @@ const ProductsAdminView = (props: PropTypes) => {
           <Button
             type="button"
             className=""
-            onClick={() => setModalAddProdct(true)}
+            onClick={() => setModalAddProduct(true)}
           >
             <i className="bx bx-plus" /> Add Product
           </Button>
@@ -138,7 +140,7 @@ const ProductsAdminView = (props: PropTypes) => {
                           type="button"
                           variant="bg-slate-800 text-white hover:bg-slate-700"
                           className="px-2"
-                          // onClick={() => setUpdateUser(user)}
+                          onClick={() => setUpdateProduct(product)}
                         >
                           <i className="bx bxs-edit-alt" />
                         </Button>
@@ -173,7 +175,15 @@ const ProductsAdminView = (props: PropTypes) => {
       </AdminLayout>
       {modalAddProduct && (
         <ModalAddProduct
-          setModalAddProduct={setModalAddProdct}
+          setModalAddProduct={setModalAddProduct}
+          setToaster={setToaster}
+          setProductsData={setProductsData}
+        />
+      )}
+      {Object.keys(updateProduct).length > 0 && (
+        <ModalUpdateProduct
+          setUpdateProduct={setUpdateProduct}
+          updateProduct={updateProduct}
           setToaster={setToaster}
           setProductsData={setProductsData}
         />

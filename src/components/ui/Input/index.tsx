@@ -3,7 +3,7 @@ type PropsTypes = {
   name: string;
   type: string;
   placeholder?: string;
-  defaultValue?: string;
+  defaultValue?: string | number;
   disabled?: boolean;
   className?: string;
   onChange?: (e: any) => void;
