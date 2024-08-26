@@ -95,7 +95,7 @@ const UsersAdminView = (props: PropTypes) => {
           </table>
         </div>
       </AdminLayout>
-      {Object.keys(updateUser).length && (
+      {Object.keys(updateUser).length ? (
         <ModalUpdateUser
           updateUser={updateUser}
           setUpdateUser={setUpdateUser}
@@ -103,8 +103,9 @@ const UsersAdminView = (props: PropTypes) => {
           setToaster={setToaster}
           session={session}
         />
-      )}
-      {Object.keys(deleteUser).length && (
+      ) : null}
+
+      {Object.keys(deleteUser).length ? (
         <ModalDeleteUser
           deleteUser={deleteUser}
           setDeleteUser={setDeleteUser}
@@ -112,7 +113,7 @@ const UsersAdminView = (props: PropTypes) => {
           setToaster={setToaster}
           session={session}
         />
-      )}
+      ) : null}
     </>
   );
 };

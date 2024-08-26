@@ -1,6 +1,7 @@
 type Options = {
   label: string;
   value: string;
+  selected?: boolean;
 };
 
 type PropsTypes = {
@@ -8,7 +9,7 @@ type PropsTypes = {
   name: string;
   defaultValue?: string;
   disabled?: boolean;
-  options: Options[];
+  options: Options[] | any;
 };
 
 const Select = (props: PropsTypes) => {
@@ -25,8 +26,12 @@ const Select = (props: PropsTypes) => {
         defaultValue={defaultValue}
         disabled={disabled}
       >
-        {options.map((option) => (
-          <option value={option.value} key={option.label}>
+        {options.map((option: Options) => (
+          <option
+            value={option.value}
+            key={option.label}
+            selected={option.selected}
+          >
             {option.label}
           </option>
         ))}

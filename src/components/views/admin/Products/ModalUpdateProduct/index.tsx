@@ -32,73 +32,23 @@ const ModalUpdateProduct = (props: Proptypes) => {
     setStockCount(newStockCount);
   };
 
-  const uploadImage = async (id: string, form: any) => {
-    const file = form.image.files[0];
-    const newName = "main." + file.name.split(".")[1];
-    if (file) {
-      await uploadFile(
-        id,
-        file,
-        newName,
-        "products",
-        async (status: boolean, newImageURL: string) => {
-          if (status) {
-            const data = {
-              image: newImageURL,
-            };
-
-            const result = await productServices.updateProduct(
-              id,
-              data,
-              session.data?.accessToken
-            );
-
-            if (result.status === 200) {
-              setIsLoading(false);
-              setUploadedImage(null);
-              form.reset();
-              setUpdateProduct(false);
-              const { data } = await productServices.getAllProducts();
-              setProductsData(data.data);
-              setToaster({
-                variant: "success",
-                message: "Success Add Product",
-              });
-            } else {
-              setIsLoading(false);
-              setToaster({
-                variant: "danger",
-                message: "Failed Add Product",
-              });
-            }
-          } else {
-            setIsLoading(false);
-            setToaster({
-              variant: "danger",
-              message: "Failed Add Product",
-            });
-          }
-        }
-      );
-    } else {
-      setIsLoading(false);
-      setToaster({
-        variant: "danger",
-        message: "No file selected",
-      });
-    }
-  };
-
   const updateProducts = async (
     form: any,
     newImageURL: string = updateProduct.image
   ) => {
+    const stock = stockCount.map((stock: any) => {
+      return {
+        size: stock.size,
+        qty: parseInt(`${stock.qty}`),
+      };
+    });
+
     const data = {
       name: form.name.value,
       price: form.price.value,
       category: form.category.value,
       status: form.status.value,
-      stock: stockCount,
+      stock: stock,
       image: newImageURL,
     };
 

@@ -183,22 +183,22 @@ const ProductsAdminView = (props: PropTypes) => {
           setProductsData={setProductsData}
         />
       )}
-      {Object.keys(updateProduct).length > 0 && (
+      {Object.keys(updateProduct).length > 0 ? (
         <ModalUpdateProduct
           setUpdateProduct={setUpdateProduct}
           updateProduct={updateProduct}
           setToaster={setToaster}
           setProductsData={setProductsData}
         />
-      )}
-      {Object.keys(deletedProduct).length > 0 && (
+      ) : null}
+      {Object.keys(deletedProduct).length > 0 ? (
         <ModalDeleteProduct
           setDeleteProduct={setDeletedProduct}
           deletedProduct={deletedProduct}
           setToaster={setToaster}
           setProductsData={setProductsData}
         />
-      )}
+      ) : null}
     </>
   );
 };
