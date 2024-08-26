@@ -2,6 +2,7 @@ import { Product } from "@/types/product.type";
 import { convertIDR } from "@/utils/currency";
 import Image from "next/image";
 import Card from "./Card";
+import Link from "next/link";
 
 type PropTypes = {
   products: Product[];
@@ -34,7 +35,9 @@ const ProductView = (props: PropTypes) => {
         </div>
         <div className="w-full grid grid-cols-3 gap-4 gap-y-10">
           {products.map((product) => (
-            <Card product={product} key={product.id} />
+            <Link href={`/products/${product.id}`} key={product.id}>
+              <Card product={product} />
+            </Link>
           ))}
         </div>
       </div>

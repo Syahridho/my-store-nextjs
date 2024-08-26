@@ -34,6 +34,22 @@ const userServices = {
         },
       }
     ),
+  getCarts: (token: string) =>
+    instance.get("/api/user/cart", {
+      headers: {
+        Authorization: `bearer ${token}`,
+      },
+    }),
+  addToCart: (data: any, token: string) =>
+    instance.put(
+      "/api/user/cart",
+      { data },
+      {
+        headers: {
+          Authorization: `bearer ${token}`,
+        },
+      }
+    ),
 };
 
 export default userServices;

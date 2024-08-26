@@ -4,13 +4,12 @@ import Image from "next/image";
 
 type PropTypes = {
   product: Product;
-  key: string;
 };
 
 const Card = (props: PropTypes) => {
-  const { product, key } = props;
+  const { product } = props;
   return (
-    <div className="cursor-pointer" key={key}>
+    <div className="cursor-pointer">
       <Image
         src={product.image}
         alt="products"
