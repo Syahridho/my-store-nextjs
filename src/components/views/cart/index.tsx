@@ -57,13 +57,15 @@ const CartView = (props: PropTypes) => {
             {cart.map((item: { id: string; size: string; qty: number }) => (
               <Fragment key={`${item.id}-${item.size}`}>
                 <div className="flex gap-5 my-4">
-                  <Image
-                    src={`${getProduct(item.id)?.image}`}
-                    width={500}
-                    height={500}
-                    alt={`${item.id}-${item.size}`}
-                    className="w-32 h-32 rounded"
-                  />
+                  {getProduct(item.id)?.image && (
+                    <Image
+                      src={`${getProduct(item.id)?.image}`}
+                      width={500}
+                      height={500}
+                      alt={`${item.id}-${item.size}`}
+                      className="w-32 h-32 rounded"
+                    />
+                  )}
                   <div className="w-full">
                     <h4 className="text-lg">{getProduct(item.id)?.name}</h4>
                     <p>{getProduct(item.id)?.category}</p>
@@ -73,7 +75,7 @@ const CartView = (props: PropTypes) => {
                         <Select
                           name="size"
                           options={getOptionsSize(item.id, item.size)}
-                        ></Select>
+                        />
                       </div>
                       <div className="text-sm flex items-center gap-2">
                         Qty

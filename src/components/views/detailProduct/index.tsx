@@ -79,13 +79,16 @@ const DetailProductView = (props: PropTypes) => {
             alt={product?.name}
             width={400}
             height={400}
-            className="w-full scale-100 h-auto"
+            className="w-full scale-100 h-auto rounded shadow"
           />
         </div>
         <div className="w-1/2">
           <h1>{product?.name}</h1>
           <h3 className="text-slate-500 mt-1">{product?.category}</h3>
           <h3 className="mt-3">{convertIDR(product?.price)}</h3>
+          <p className="text-slate-500 mt-5 leading-6 text-sm text-justify">
+            {product?.description}
+          </p>
           <p className="mt-5 mb-2 text-slate-600 text-sm">Select Size</p>
           <div className="grid grid-cols-5 gap-4">
             {product?.stock?.map((item: { size: string; qty: number }) => (

@@ -26,7 +26,7 @@ const Select = (props: PropsTypes) => {
         defaultValue={defaultValue}
         disabled={disabled}
       >
-        {options.map((option: Options) => (
+        {options?.map((option: Options) => (
           <option
             value={option.value}
             key={option.label}
