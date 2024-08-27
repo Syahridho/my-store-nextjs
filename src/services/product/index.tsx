@@ -1,30 +1,14 @@
 import instance from "@/lib/axios/instance";
 
+const endPoint = "/api/product";
+
 const productServices = {
-  getAllProducts: () => instance.get("/api/product"),
-  getDetailProduct: (id: string) => instance.get(`/api/product/${id}`),
-  addProduct: (data: any, token: string) =>
-    instance.post("/api/product", data, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }),
-  updateProduct: (id: string, data: any, token: string) =>
-    instance.put(
-      `/api/product/${id}`,
-      { data },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    ),
-  deleteProduct: (id: string, token: string) =>
-    instance.delete(`/api/product/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }),
+  getAllProducts: () => instance.get(endPoint),
+  getDetailProduct: (id: string) => instance.get(`${endPoint}/${id}`),
+  addProduct: (data: any) => instance.post(endPoint, data),
+  updateProduct: (id: string, data: any) =>
+    instance.put(`${endPoint}/${id}`, { data }),
+  deleteProduct: (id: string) => instance.delete(`${endPoint}/${id}`),
 };
 
 export default productServices;

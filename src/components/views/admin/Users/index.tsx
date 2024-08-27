@@ -13,7 +13,6 @@ type PropTypes = {
 
 const UsersAdminView = (props: PropTypes) => {
   const { users, setToaster } = props;
-  const session: any = useSession();
 
   const [updateUser, setUpdateUser] = useState<User | {}>({});
   const [deleteUser, setDeleteUser] = useState<User | {}>({});
@@ -101,7 +100,6 @@ const UsersAdminView = (props: PropTypes) => {
           setUpdateUser={setUpdateUser}
           setUsersData={setUsersData}
           setToaster={setToaster}
-          session={session}
         />
       ) : null}
 
@@ -111,7 +109,6 @@ const UsersAdminView = (props: PropTypes) => {
           setDeleteUser={setDeleteUser}
           setUsersData={setUsersData}
           setToaster={setToaster}
-          session={session}
         />
       ) : null}
     </>

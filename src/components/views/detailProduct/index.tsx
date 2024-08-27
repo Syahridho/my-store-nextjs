@@ -17,7 +17,7 @@ type PropTypes = {
 const DetailProductView = (props: PropTypes) => {
   const { product, cart, productId, setToaster } = props;
 
-  const { status, data: session }: any = useSession();
+  const { status }: any = useSession();
   const router = useRouter();
 
   const [selectedSize, setSelectedSize] = useState("");
@@ -47,12 +47,9 @@ const DetailProductView = (props: PropTypes) => {
         ];
       }
       try {
-        const result = await userServices.addToCart(
-          {
-            carts: newCart,
-          },
-          session?.accessToken
-        );
+        const result = await userServices.addToCart({
+          carts: newCart,
+        });
         if (result.status === 200) {
           setSelectedSize("");
           setToaster({
@@ -66,7 +63,6 @@ const DetailProductView = (props: PropTypes) => {
           message: "Failed Add To Cart",
         });
       }
-      console.log(newCart);
     }
   };
 

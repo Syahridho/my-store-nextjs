@@ -8,13 +8,28 @@ export default async function handler(
 ) {
   if (req.method === "GET") {
     const users = await retrieveData("users");
-    const data = users.map((user: any) => {
-      delete user.password;
-      return user;
-    });
-    res
-      .status(200)
-      .json({ status: true, statusCode: 200, message: "success", data });
+    const token = req.headers.authorization?.split(" ")[1] || "";
+    jwt.verify(
+      token,
+      process.env.NEXT_AUTH_SECRET || "",
+      async (error: any, decoded: any) => {
+        if (decoded && decoded.role === "admin") {
+          const data = users.map((user: any) => {
+            delete user.password;
+            return user;
+          });
+          res
+            .status(200)
+            .json({ status: true, statusCode: 200, message: "success", data });
+        } else {
+          res.status(403).json({
+            status: false,
+            statusCode: 403,
+            message: "Access denied",
+          });
+        }
+      }
+    );
   } else if (req.method === "PUT") {
     const { user }: any = req.query;
     const token = req.headers.authorization?.split(" ")[1] || "";

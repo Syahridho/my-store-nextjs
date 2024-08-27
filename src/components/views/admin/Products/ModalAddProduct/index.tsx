@@ -22,7 +22,6 @@ const ModalAddProduct = (props: Proptypes) => {
   const [isLoading, setIsLoading] = useState(false);
   const [stockCount, setStockCount] = useState([{ size: "", qty: 0 }]);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
-  const session: any = useSession();
 
   const handleStock = (e: any, i: number, type: string) => {
     const newStockCount: any = [...stockCount];
@@ -45,11 +44,7 @@ const ModalAddProduct = (props: Proptypes) => {
               image: newImageURL,
             };
 
-            const result = await productServices.updateProduct(
-              id,
-              data,
-              session.data?.accessToken
-            );
+            const result = await productServices.updateProduct(id, data);
 
             if (result.status === 200) {
               setIsLoading(false);
@@ -107,10 +102,7 @@ const ModalAddProduct = (props: Proptypes) => {
       image: "",
     };
 
-    const result = await productServices.addProduct(
-      data,
-      session.data?.accessToken
-    );
+    const result = await productServices.addProduct(data);
 
     if (result.status === 200) {
       uploadImage(result.data.data.id, form);

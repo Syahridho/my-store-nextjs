@@ -24,7 +24,6 @@ const ModalUpdateProduct = (props: Proptypes) => {
   const [isLoading, setIsLoading] = useState(false);
   const [stockCount, setStockCount] = useState(updateProduct.stock);
   const [uploadedImage, setUploadedImage] = useState<File | null>(null);
-  const session: any = useSession();
 
   const handleStock = (e: any, i: number, type: string) => {
     const newStockCount: any = [...stockCount];
@@ -53,11 +52,7 @@ const ModalUpdateProduct = (props: Proptypes) => {
       image: newImageURL,
     };
 
-    const result = await productServices.updateProduct(
-      updateProduct.id,
-      data,
-      session.data?.accessToken
-    );
+    const result = await productServices.updateProduct(updateProduct.id, data);
 
     if (result.status === 200) {
       setIsLoading(false);

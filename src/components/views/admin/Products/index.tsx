@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react";
 import AdminLayout from "@/components/layouts/AdminLayout";
 import Button from "@/components/ui/Button";
 import { useSession } from "next-auth/react";
@@ -16,7 +16,6 @@ type PropTypes = {
 
 const ProductsAdminView = (props: PropTypes) => {
   const { products, setToaster } = props;
-  const session: any = useSession();
 
   const [productsData, setProductsData] = useState<Product[]>([]);
   const [modalAddProduct, setModalAddProduct] = useState(false);
@@ -95,8 +94,8 @@ const ProductsAdminView = (props: PropTypes) => {
             </thead>
             <tbody>
               {productsData.map((product, index) => (
-                <>
-                  <tr key={product.id}>
+                <Fragment key={product.id}>
+                  <tr>
                     <td
                       rowSpan={product.stock.length}
                       className="border border-slate-200 py-1 px-2 text-sm text-center"
@@ -160,17 +159,17 @@ const ProductsAdminView = (props: PropTypes) => {
                   </tr>
                   {product.stock.map(
                     (stock: { size: string; qty: number }, index: number) => (
-                      <>
+                      <Fragment key={stock.size}>
                         {index > 0 && (
-                          <tr key={stock.size}>
+                          <tr>
                             <td className="text-center">{stock.size}</td>
                             <td className="text-center">{stock.qty}</td>
                           </tr>
                         )}
-                      </>
+                      </Fragment>
                     )
                   )}
-                </>
+                </Fragment>
               ))}
             </tbody>
           </table>

@@ -5,23 +5,22 @@ import { uploadFile } from "@/lib/firebase/service";
 import userServices from "@/services/user";
 import { User } from "@/types/user.type";
 import Image from "next/image";
-import { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 
 type PropTypes = {
-  profile: User | any;
-  setProfile: Dispatch<SetStateAction<{}>>;
-  session: any;
   setToaster: Dispatch<SetStateAction<{}>>;
 };
 
-const ProfileMemberView = ({
-  profile,
-  setProfile,
-  session,
-  setToaster,
-}: PropTypes) => {
+const ProfileMemberView = ({ setToaster }: PropTypes) => {
   const [changeImage, setChangeImage] = useState<File | any>({});
   const [isLoading, setIsLoading] = useState("");
+  const [profile, setProfile] = useState<any>({});
 
   const handleChangeProfile = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,10 +30,7 @@ const ProfileMemberView = ({
       fullname: form.fullname.value,
       phone: form.phone.value,
     };
-    const result = await userServices.updateProfile(
-      data,
-      session.data?.accessToken
-    );
+    const result = await userServices.updateProfile(data);
     if (result.status === 200) {
       setIsLoading("");
       setProfile({
@@ -69,10 +65,7 @@ const ProfileMemberView = ({
             const data = {
               image: newImageURL,
             };
-            const result = await userServices.updateProfile(
-              data,
-              session.data?.accessToken
-            );
+            const result = await userServices.updateProfile(data);
             if (result.status === 200) {
               setIsLoading("");
               setProfile({
@@ -111,10 +104,7 @@ const ProfileMemberView = ({
       encryptedPassword: profile.password,
     };
     try {
-      const result = await userServices.updateProfile(
-        data,
-        session.data?.accessToken
-      );
+      const result = await userServices.updateProfile(data);
       if (result.status === 200) {
         setIsLoading("");
         form.reset();
@@ -132,6 +122,15 @@ const ProfileMemberView = ({
       form.reset();
     }
   };
+
+  const getProfile = async () => {
+    const { data } = await userServices.getProfile();
+    setProfile(data.data);
+  };
+
+  useEffect(() => {
+    getProfile();
+  }, []);
 
   return (
     <MemberLayout>
