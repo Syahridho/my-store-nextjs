@@ -4,16 +4,15 @@ import Select from "@/components/ui/Select";
 import { Product } from "@/types/product.type";
 import { convertIDR } from "@/utils/currency";
 import Image from "next/image";
-import { Dispatch, Fragment, SetStateAction } from "react";
+import { Fragment } from "react";
 
 type PropTypes = {
-  setToaster: Dispatch<SetStateAction<{}>>;
   products: Product[];
-  cart: any;
+  cart: any | [];
 };
 
 const CartView = (props: PropTypes) => {
-  const { setToaster, products, cart } = props;
+  const { products, cart } = props;
 
   const getProduct = (id: string) => {
     const product = products.find((product) => product.id === id);
@@ -38,7 +37,7 @@ const CartView = (props: PropTypes) => {
   };
 
   const getTotalPrice = () => {
-    const total = cart.reduce(
+    const total = cart?.reduce(
       (acc: number, item: { id: string; size: string; qty: number }) => {
         const product: any = getProduct(item.id);
         return (acc += parseInt(product?.price) * item.qty);
@@ -54,7 +53,7 @@ const CartView = (props: PropTypes) => {
         <h1 className="font-bold text-xl">Cart</h1>
         <div className="w-full mt-6">
           <div className="w-full ">
-            {cart.map((item: { id: string; size: string; qty: number }) => (
+            {cart?.map((item: { id: string; size: string; qty: number }) => (
               <Fragment key={`${item.id}-${item.size}`}>
                 <div className="flex gap-5 my-4">
                   {getProduct(item.id)?.image && (

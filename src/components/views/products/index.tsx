@@ -1,6 +1,4 @@
 import { Product } from "@/types/product.type";
-import { convertIDR } from "@/utils/currency";
-import Image from "next/image";
 import Card from "./Card";
 import Link from "next/link";
 

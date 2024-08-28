@@ -2,19 +2,27 @@ import Modal from "@/components/ui/Modal";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
 import Button from "@/components/ui/Button";
-import { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 import userServices from "@/services/user";
 import { User } from "@/types/user.type";
+import { ToasterContext } from "@/context/ToasterContext";
+import { ToasterType } from "@/types/toaster.type";
 
 type PropTypes = {
   setUsersData: Dispatch<SetStateAction<User[]>>;
-  setToaster: Dispatch<SetStateAction<{}>>;
   updateUser: User | any;
   setUpdateUser: Dispatch<SetStateAction<{}>>;
 };
 
 const ModalUpdateUser = (props: PropTypes) => {
-  const { updateUser, setUpdateUser, setUsersData, setToaster } = props;
+  const { updateUser, setUpdateUser, setUsersData } = props;
+  const { setToaster }: ToasterType = useContext(ToasterContext);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleUpdateUser = async (event: FormEvent<HTMLFormElement>) => {

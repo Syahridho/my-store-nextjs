@@ -1,21 +1,22 @@
 import Button from "@/components/ui/Button";
 import Modal from "@/components/ui/Modal";
+import { ToasterContext } from "@/context/ToasterContext";
 import { deleteFile } from "@/lib/firebase/service";
 import productServices from "@/services/product";
 import { Product } from "@/types/product.type";
-import { useSession } from "next-auth/react";
-import { Dispatch, SetStateAction, useState } from "react";
+import { ToasterType } from "@/types/toaster.type";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 
 type PropTypes = {
   setProductsData: Dispatch<SetStateAction<Product[]>>;
-  setToaster: Dispatch<SetStateAction<{}>>;
   deletedProduct: Product | any;
   setDeleteProduct: Dispatch<SetStateAction<{}>>;
 };
 
 const ModalDeleteProduct = (props: PropTypes) => {
-  const { deletedProduct, setDeleteProduct, setProductsData, setToaster } =
-    props;
+  const { deletedProduct, setDeleteProduct, setProductsData } = props;
+
+  const { setToaster }: ToasterType = useContext(ToasterContext);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async () => {

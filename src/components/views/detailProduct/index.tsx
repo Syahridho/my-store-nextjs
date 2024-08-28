@@ -1,21 +1,23 @@
 import Button from "@/components/ui/Button";
+import { ToasterContext } from "@/context/ToasterContext";
 import userServices from "@/services/user";
 import { Product } from "@/types/product.type";
+import { ToasterType } from "@/types/toaster.type";
 import { convertIDR } from "@/utils/currency";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { Dispatch, SetStateAction, useState } from "react";
+import { useContext, useState } from "react";
 
 type PropTypes = {
   product: Product | any;
-  cart: any;
+  cart: any | [];
   productId: string | any;
-  setToaster: Dispatch<SetStateAction<{}>>;
 };
 
 const DetailProductView = (props: PropTypes) => {
-  const { product, cart, productId, setToaster } = props;
+  const { setToaster }: ToasterType = useContext(ToasterContext);
+  const { product, cart, productId } = props;
 
   const { status }: any = useSession();
   const router = useRouter();
@@ -26,7 +28,7 @@ const DetailProductView = (props: PropTypes) => {
     if (selectedSize !== "") {
       let newCart = [];
       if (
-        cart.filter(
+        cart?.filter(
           (item: any) => item.id === productId && item.size === selectedSize
         ).length > 0
       ) {

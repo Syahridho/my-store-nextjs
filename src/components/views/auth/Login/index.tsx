@@ -1,15 +1,13 @@
-import { Dispatch, FormEvent, SetStateAction, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { signIn } from "next-auth/react";
 import Input from "@/components/ui/Input";
 import Button from "@/components/ui/Button";
 import AuthLayout from "@/components/layouts/AuthLayout";
+import { ToasterContext } from "@/context/ToasterContext";
 
-const LoginView = ({
-  setToaster,
-}: {
-  setToaster: Dispatch<SetStateAction<{}>>;
-}) => {
+const LoginView = () => {
+  const { setToaster } = useContext(ToasterContext);
   const [isLoading, setIsLoading] = useState(false);
 
   const { push, query } = useRouter();
@@ -52,7 +50,6 @@ const LoginView = ({
       title="Login"
       link="/auth/register"
       linkText="Don't have an account? Sign Up "
-      setToaster={setToaster}
     >
       <form onSubmit={handleSubmit}>
         <Input label="Email" name="email" type="email" />

@@ -1,13 +1,10 @@
 import Link from "next/link";
-import { Dispatch, SetStateAction } from "react";
 
 type PropsTypes = {
   title?: string;
   children: React.ReactNode;
   link: string;
   linkText?: string;
-
-  setToaster: Dispatch<SetStateAction<{}>>;
 };
 
 const AuthLayout = (props: PropsTypes) => {
