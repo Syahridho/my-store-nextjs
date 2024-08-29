@@ -1,4 +1,4 @@
-import UsersAdminView from "@/components/views/Admin/Users";
+import UsersAdminView from "@/components/views/Admin_temp/Users";
 import userServices from "@/services/user";
 import { useEffect, useState } from "react";
 
