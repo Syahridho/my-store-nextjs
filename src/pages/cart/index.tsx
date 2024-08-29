@@ -1,4 +1,4 @@
-import CartView from "@/components/views/Carts_temp";
+import CartView from "@/components/views/Cart";
 import Head from "next/head";
 
 const CartPage = () => {
