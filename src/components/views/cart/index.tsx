@@ -1,18 +1,32 @@
 import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 import Select from "@/components/ui/Select";
+import { ToasterContext } from "@/context/ToasterContext";
+import productServices from "@/services/product";
+import userServices from "@/services/user";
 import { Product } from "@/types/product.type";
+import { ToasterType } from "@/types/toaster.type";
 import { convertIDR } from "@/utils/currency";
+import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { Fragment } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 
-type PropTypes = {
-  products: Product[];
-  cart: any | [];
-};
+const CartView = () => {
+  const session: any = useSession();
+  const { setToaster }: ToasterType = useContext(ToasterContext);
 
-const CartView = (props: PropTypes) => {
-  const { products, cart } = props;
+  const [products, setProducts] = useState<Product[]>([]);
+  const [cart, setCart] = useState([]);
+
+  const getAllProducts = async () => {
+    const { data } = await productServices.getAllProducts();
+    setProducts(data.data);
+  };
+
+  const getCart = async () => {
+    const { data } = await userServices.getCarts();
+    setCart(data.data);
+  };
 
   const getProduct = (id: string) => {
     const product = products.find((product) => product.id === id);
@@ -47,12 +61,47 @@ const CartView = (props: PropTypes) => {
     return total;
   };
 
+  const handelDeleteCart = async (id: string, size: string) => {
+    const newCart = cart.filter((item: any) => {
+      return item.id !== id || item.size !== size;
+    });
+    try {
+      const result = await userServices.addToCart({
+        carts: newCart,
+      });
+
+      if (result.status === 200) {
+        setCart(newCart);
+        setToaster({
+          variant: "success",
+          message: "Success Delete Item From Cart",
+        });
+      }
+    } catch (error) {
+      setToaster({
+        variant: "danger",
+        message: "Failed Delete Item From Cart",
+      });
+    }
+  };
+
+  useEffect(() => {
+    getAllProducts();
+  }, []);
+
+  useEffect(() => {
+    if (session.data?.accessToken) {
+      getCart();
+    }
+  }, [session]);
+
   return (
     <div className="py-12 px-[15vw] flex gap-5">
       <div className="w-2/3 ">
         <h1 className="font-bold text-xl">Cart</h1>
-        <div className="w-full mt-6">
-          <div className="w-full ">
+
+        {cart.length > 0 ? (
+          <div className="w-full mt-6">
             {cart?.map((item: { id: string; size: string; qty: number }) => (
               <Fragment key={`${item.id}-${item.size}`}>
                 <div className="flex gap-5 my-4">
@@ -74,6 +123,7 @@ const CartView = (props: PropTypes) => {
                         <Select
                           name="size"
                           options={getOptionsSize(item.id, item.size)}
+                          disabled
                         />
                       </div>
                       <div className="text-sm flex items-center gap-2">
@@ -90,6 +140,7 @@ const CartView = (props: PropTypes) => {
                       type="button"
                       variant="bg-red-500 text-white hover:bg-red-500 border-red-500"
                       className="text-xs"
+                      onClick={() => handelDeleteCart(item.id, item.size)}
                     >
                       <i className="bx bxs-trash" />
                     </Button>
@@ -102,7 +153,11 @@ const CartView = (props: PropTypes) => {
               </Fragment>
             ))}
           </div>
-        </div>
+        ) : (
+          <div className="text-center text-slate-500 mt-12">
+            <h1>Tidak ada data</h1>
+          </div>
+        )}
       </div>
       <div className="w-1/3">
         <h1 className="font-bold text-xl">Summer</h1>
