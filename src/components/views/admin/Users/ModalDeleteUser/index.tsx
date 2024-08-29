@@ -18,7 +18,7 @@ const ModalDeleteUser = (props: PropTypes) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleDelete = async () => {
-    const result = await userServices.deleteUser(deleteUser.id);
+    const result = await userServices.deleteUser(deleteUser?.id);
 
     if (result.status === 200) {
       setIsLoading(false);
