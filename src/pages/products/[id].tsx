@@ -1,4 +1,4 @@
-import DetailProductView from "@/components/views/DetailProduct_temp";
+import DetailProductView from "@/components/views/DetailProduct";
 import productServices from "@/services/product";
 import userServices from "@/services/user";
 import { Product } from "@/types/product.type";
