@@ -9,6 +9,7 @@ import { ToasterType } from "@/types/toaster.type";
 import { convertIDR } from "@/utils/currency";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { Fragment, useContext, useEffect, useState } from "react";
 
 const CartView = () => {
@@ -29,12 +30,12 @@ const CartView = () => {
   };
 
   const getProduct = (id: string) => {
-    const product = products.find((product) => product.id === id);
+    const product = products.find((product: Product) => product.id === id);
     return product;
   };
 
   const getOptionsSize = (id: string, selected: string) => {
-    const product = products.find((product) => product.id === id);
+    const product = products.find((product: Product) => product.id === id);
     const options = product?.stock.map(
       (stock: { size: string; qty: number }) => {
         if (stock.qty > 0) {
@@ -179,9 +180,12 @@ const CartView = () => {
           <p>{convertIDR(getTotalPrice())}</p>
         </div>
         <hr />
-        <Button type="button" className="w-full mt-6">
+        <Link
+          href={"/checkout"}
+          className="w-full mt-6 bg-slate-800 block text-center text-white py-2 rounded shadow"
+        >
           Check Out
-        </Button>
+        </Link>
       </div>
     </div>
   );

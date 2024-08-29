@@ -1,4 +1,4 @@
-import ProductView from "@/components/views/products";
+import ProductView from "@/components/views/Products";
 import productServices from "@/services/product";
 import Head from "next/head";
 import { useEffect, useState } from "react";

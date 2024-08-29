@@ -1,4 +1,4 @@
-import Dashboard from "@/components/views/member/Dashboard";
+import Dashboard from "@/components/views/Member/Dashboard";
 
 const MemberPage = () => {
   return (
