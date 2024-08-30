@@ -39,7 +39,7 @@ const ModalChangeAddress = (props: PropTypes) => {
     setIsLoading(true);
     const form = event.target as HTMLFormElement;
     let data;
-    if (profile.address.length > 0) {
+    if (profile.address) {
       data = {
         address: [
           ...profile.address,

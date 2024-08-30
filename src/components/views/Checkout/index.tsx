@@ -9,6 +9,14 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { Fragment, useContext, useEffect, useState } from "react";
 import ModalChangeAddress from "./ModalChangeAddress";
+import Script from "next/script";
+import transactionServices from "@/services/transaction";
+
+declare global {
+  interface Window {
+    snap: any;
+  }
+}
 
 const CheckoutView = () => {
   const session: any = useSession();
@@ -52,29 +60,21 @@ const CheckoutView = () => {
     return total;
   };
 
-  // const handelDeleteCheckout = async (id: string, size: string) => {
-  //   const newCheckout = Checkout.filter((item: any) => {
-  //     return item.id !== id || item.size !== size;
-  //   });
-  //   try {
-  //     const result = await userServices.addToCart({
-  //       Checkouts: newCheckout,
-  //     });
-
-  //     if (result.status === 200) {
-  //       setCheckout(newCheckout);
-  //       setToaster({
-  //         variant: "success",
-  //         message: "Success Delete Item From Checkout",
-  //       });
-  //     }
-  //   } catch (error) {
-  //     setToaster({
-  //       variant: "danger",
-  //       message: "Failed Delete Item From Checkout",
-  //     });
-  //   }
-  // };
+  const handleCheckOut = async () => {
+    const payload = {
+      user: {
+        fullname: profile.fullname,
+        email: profile.email,
+        address: profile.address[selectedAddress],
+      },
+      transaction: {
+        items: profile.carts,
+        total: getTotalPrice(),
+      },
+    };
+    const { data } = await transactionServices.generateTransaction(payload);
+    window.snap.pay(data.data.token);
+  };
 
   useEffect(() => {
     getAllProducts();
@@ -88,6 +88,12 @@ const CheckoutView = () => {
 
   return (
     <>
+      <Script
+        src={process.env.NEXT_PUBLIC_MIDTRANS_SNAP_URL}
+        data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
+        strategy="lazyOnload"
+      />
+
       <div className="py-12 px-[15vw] flex gap-5">
         <div className="w-2/3 ">
           <h1 className="font-bold text-xl">Checkout</h1>
@@ -183,7 +189,11 @@ const CheckoutView = () => {
             <p>{convertIDR(getTotalPrice())}</p>
           </div>
           <hr />
-          <Button type="button" className="w-full mt-6">
+          <Button
+            type="button"
+            className="w-full mt-6"
+            onClick={() => handleCheckOut()}
+          >
             Proses Payment
           </Button>
         </div>
