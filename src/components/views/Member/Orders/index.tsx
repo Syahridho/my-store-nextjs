@@ -1,18 +1,31 @@
 import MemberLayout from "@/components/layouts/MemberLayout";
 import Button from "@/components/ui/Button";
 import userServices from "@/services/user";
-import { User } from "@/types/user.type";
 import { convertIDR } from "@/utils/currency";
 import Script from "next/script";
 import { useEffect, useState } from "react";
+import ModalDetailOrder from "./ModalDetailOrder";
+import productServices from "@/services/product";
+import { Product } from "@/types/product.type";
 
-const OrdersMemberView = (props: any) => {
+const OrdersMemberView = () => {
   const [profile, setProfile] = useState<any>({});
+  const [detailOrder, setDetailOrder] = useState<any>({});
+  const [products, setProducts] = useState<Product[]>([]);
 
   const getProfile = async () => {
     const { data } = await userServices.getProfile();
     setProfile(data.data);
   };
+
+  const getAllProducts = async () => {
+    const { data } = await productServices.getAllProducts();
+    setProducts(data.data);
+  };
+
+  useEffect(() => {
+    getAllProducts();
+  }, []);
 
   useEffect(() => {
     getProfile();
@@ -67,7 +80,7 @@ const OrdersMemberView = (props: any) => {
                       <Button
                         type="button"
                         className=""
-                        // onClick={() => setUpdateUser(user)}
+                        onClick={() => setDetailOrder(transaction)}
                       >
                         <i className="bx bx-dots-vertical-rounded"></i>
                       </Button>
@@ -89,6 +102,13 @@ const OrdersMemberView = (props: any) => {
           </table>
         </div>
       </MemberLayout>
+      {Object.keys(detailOrder).length > 0 ? (
+        <ModalDetailOrder
+          products={products}
+          detailOrder={detailOrder}
+          setDetailOrder={setDetailOrder}
+        />
+      ) : null}
     </>
   );
 };
