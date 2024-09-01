@@ -13,7 +13,7 @@ const listSidebarItem = [
   {
     title: "Orders",
     url: "/member/orders",
-    icon: "bxs-cart",
+    icon: "bxs-user",
   },
   {
     title: "Profile",

@@ -12,8 +12,8 @@ export default async function handler(
   res: NextApiResponse
 ) {
   if (req.method === "GET") {
-    const users = await retrieveData("users");
     verify(req, res, true, async () => {
+      const users = await retrieveData("users");
       const data = users.map((user: any) => {
         delete user.password;
         return user;
